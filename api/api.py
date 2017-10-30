@@ -3,7 +3,6 @@ from flask_cors import CORS
 from time import time
 import shlex
 import subprocess
-import math
 
 
 app = Flask(__name__)
@@ -52,4 +51,4 @@ def compute():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

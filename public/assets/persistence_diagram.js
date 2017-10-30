@@ -16,7 +16,12 @@ function pd_display(selector, points) {
         return p.coords.join(',')
     }).join("\n");
 
-    d3.request("http://127.0.0.1:5000/ripser")
+    var apiURL = '/ripser';
+    if (window.location.hostname === "localhost") {
+        apiURL = 'http://localhost:5000/ripser';
+    }
+
+    d3.request(apiURL)
         .post(
             postData,
             function(error, res) {
