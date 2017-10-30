@@ -7,7 +7,7 @@ function pd_clear(svg) {
 function pd_message(selector, text) {
     var svg = d3.select(selector);
     pd_clear(svg);
-    svg.append('text').attr('x', 10).attr('y', 10).text(text);
+    svg.append('text').attr('x', 10).attr('y', 30).text(text);
 }
 
 function pd_display(selector, points) {

@@ -133,8 +133,9 @@ function main() {
     // Set up t-SNE and start it running.
     var points = demo.generator.apply(null, GLOBALS.state.demoParams);
 
-    pd_display('svg#persistence_diagram_before', points);
-    pd_message('svg#persistence_diagram_after', 'waiting for solution');
+    pd_message('svg#pd_before', 'drawing');
+    pd_display('svg#pd_before', points);
+    pd_message('svg#pd_after', 'waiting for solution');
 
     var canvas = document.getElementById('output');
 
@@ -150,7 +151,7 @@ function main() {
         setRunning(false)
       }
     }, function(solution) {
-        pd_display('svg#persistence_diagram_after', solution);
+        pd_display('svg#pd_after', solution);
     });
     GLOBALS.unpausedBefore = false;
     setRunning(true);

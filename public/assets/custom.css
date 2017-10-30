@@ -1,0 +1,22 @@
+.pd_table {
+
+}
+
+.pd_table td {
+    padding: 10px;
+}
+
+.pd_figure {
+    border: 2px solid steelblue;
+    border-radius: 4px;
+}
+
+.pd_svg {
+    padding: 20px 5px 0px 5px;
+}
+
+.pd_caption {
+    background: #f0f4f5;
+    color: steelblue;
+    text-align: center;
+}
