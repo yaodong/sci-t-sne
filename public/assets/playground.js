@@ -132,6 +132,10 @@ function main() {
   function runState() {
     // Set up t-SNE and start it running.
     var points = demo.generator.apply(null, GLOBALS.state.demoParams);
+
+    pd_display('svg#persistence_diagram_before', points);
+    pd_message('svg#persistence_diagram_after', 'waiting for solution');
+
     var canvas = document.getElementById('output');
 
     // if there was already a playground demo going, lets destroy it and make a new one
@@ -145,7 +149,9 @@ function main() {
       if(step >= GLOBALS.stepLimit && !GLOBALS.unpausedBefore) {
         setRunning(false)
       }
-    })
+    }, function(solution) {
+        pd_display('svg#persistence_diagram_after', solution);
+    });
     GLOBALS.unpausedBefore = false;
     setRunning(true);
   }

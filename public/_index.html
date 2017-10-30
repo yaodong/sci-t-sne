@@ -1,6 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <link href="material-icons.css" rel="stylesheet">
+<link href="assets/custom.css" rel="stylesheet">
 <script src="assets/template.v1.js"></script>
 <script type="text/front-matter">
   title: How to Use t-SNE Effectively
@@ -21,6 +22,7 @@
 <script src="assets/figure-configs.js"></script>
 <script src="assets/visualize.js"></script>
 <script src="assets/figures.js"></script>
+<script src="assets/persistence_diagram.js"></script>
 
 <style>
 
@@ -134,6 +136,10 @@ input[type=range]:focus::-ms-fill-upper {
   <h1 class="l-middle">How to Use t-SNE Effectively</h1>
   <h2 class="l-middle">Although extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading. By exploring how t-SNE behaves in simple cases, we can learn to use it more effectively.</h2>
   <div class="l-page">
+    <div>
+      <svg id="persistence_diagram_before" width="300" height="300"></svg>
+      <svg id="persistence_diagram_after" width="300" height="300"></svg>
+    </div>
     <dt-include src="assets/playground.html"></dt-include>
   </div>
   <dt-byline></dt-byline>

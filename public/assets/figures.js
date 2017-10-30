@@ -40,7 +40,7 @@ var timescale = d3.scaleLinear()
   .domain([0, 20, 50, 100, 200, 6000])
   .range([60, 30, 20, 10, 0]);
 
-function demoMaker(points, canvas, options, stepCb) {
+function demoMaker(points, canvas, options, stepCb, completedCb) {
   var demo = {};
   var paused = false;
   var step = 0;
@@ -69,6 +69,10 @@ function demoMaker(points, canvas, options, stepCb) {
       return new Point(coords, points[i].color);
     });
     visualize(solution, canvas, ""); //removed message
+
+      if (step >= GLOBALS.stepLimit) {
+        completedCb(solution);
+      }
 
     //control the loop.
     var timeout = timescale(step)
