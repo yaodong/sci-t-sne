@@ -20,3 +20,16 @@
     color: steelblue;
     text-align: center;
 }
+
+.pd_dis {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+    height: 300px;
+}
+
+.pd_dis li span {
+    margin-left: 5px;
+}

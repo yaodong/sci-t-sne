@@ -157,12 +157,15 @@ input[type=range]:focus::-ms-fill-upper {
             <div class="pd_caption">processed data</div>
           </div>
         </td>
-        <!--<td>-->
-          <!--<ul>-->
-            <!--<li><b>bottleneck distance</b><span id="pd_dis_bn"></span></li>-->
-            <!--<li><b>bottleneck distance</b><span id="pd_dis_was"></span></li>-->
-          <!--</ul>-->
-        <!--</td>-->
+        <td>
+          <div class="pd_figure">
+            <ul class="pd_dis">
+              <li><b>bottleneck:</b><br/><span id="pd_dis_bn"></span></li>
+              <li><b>wasserstein:</b><br/><span id="pd_dis_was"></span></li>
+            </ul>
+            <div class="pd_caption">distances</div>
+          </div>
+        </td>
       </tr>
     </table>
     <dt-include src="assets/playground.html"></dt-include>

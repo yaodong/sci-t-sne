@@ -151,7 +151,9 @@ function main() {
         setRunning(false)
       }
     }, function(solution) {
-        pd_display('svg#pd_after', solution);
+        pd_display('svg#pd_after', solution, function(afterID) {
+          pd_distance(d3.select('svg#pd_before').attr('data-id'), afterID);
+        });
     });
     GLOBALS.unpausedBefore = false;
     setRunning(true);

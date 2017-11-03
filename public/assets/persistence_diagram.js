@@ -6,12 +6,12 @@ function pd_clear(svg) {
 
 function pd_message(selector, text) {
     var svg = d3.select(selector);
+    svg.attr('data-id', '');
     pd_clear(svg);
     svg.append('text').attr('x', 10).attr('y', 30).text(text);
 }
 
-function pd_display(selector, points) {
-
+function pd_display(selector, points, Cb) {
     var postData = points.map(function(p) {
         return p.coords.join(',')
     }).join("\n");
@@ -25,21 +25,22 @@ function pd_display(selector, points) {
         .post(
             postData,
             function(error, res) {
-                persistence_diagram(
-                    selector,
-                    JSON.parse(res.responseText));
+                var results = JSON.parse(res.responseText);
+                pd_draw(selector, results['id'], results['diagram']);
+                if (Cb){ Cb(results['id']); }
             });
 }
 
-function persistence_diagram(selector, data) {
+function pd_draw(selector, runID, points) {
     var svg = d3.select(selector);
+    svg.attr('data-id', runID);
 
     // clean
     pd_clear(svg);
 
     var svgSize = svg.node().getBoundingClientRect().height - 10;
     var axisSpace = 30;
-    var maxCoord = d3.max(data, function(d) { return d3.max(d); }) * 1.2;
+    var maxCoord = d3.max(points, function(d) { return d3.max(d); }) * 1.2;
 
     // scales
     var pointXScale = d3.scaleLinear().domain([0, maxCoord]).range([axisSpace, svgSize]);
@@ -69,7 +70,7 @@ function persistence_diagram(selector, data) {
 
     // points
     var pointsGroup = svg.append('g');
-    var points = pointsGroup.selectAll('circle').data(data);
+    var points = pointsGroup.selectAll('circle').data(points);
 
     points.exit().remove();
     points = points.enter().append('circle').merge(points);
@@ -79,8 +80,22 @@ function persistence_diagram(selector, data) {
         .attr('cy', function(d) { return pointYScale(d[1]) })
         .attr('r', 3)
         .attr('fill', '#FD9927');
+}
 
+function pd_distance(beforeID, afterID) {
+    var postData = [beforeID, afterID].join("\n");
 
+    var apiURL = '/distance';
+    if (window.location.hostname === "localhost") {
+        apiURL = 'http://localhost:5000/distance';
+    }
 
-
+    d3.request(apiURL)
+        .post(
+            postData,
+            function(error, res) {
+                var results = JSON.parse(res.responseText);
+                d3.select('#pd_dis_bn').text(results['bottleneck']);
+                d3.select('#pd_dis_was').text(results['wasserstein']);
+            });
 }
