@@ -12,10 +12,11 @@ RUN git clone https://github.com/Ripser/ripser.git /root/ripser
 WORKDIR /root/ripser
 RUN make && cp ripser /usr/bin/
 
-ADD api.py /srv/
-ADD requirements.txt /srv/
+ADD . /srv/
+
 WORKDIR /srv
 
+RUN Rscript install.r
 RUN pip3 install -r requirements.txt
 
 CMD ["python3", "api.py"]
