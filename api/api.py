@@ -48,7 +48,7 @@ def compute():
 
         with open('/tmp/diagram-{0}'.format(run_id), 'w') as f:
             for l in rows:
-                f.write('{0}\n'.format(','.join([str(i) for i in l])))
+                f.write('{0}\n'.format(' '.join([str(i) for i in l])))
 
         return jsonify({
             'id': run_id,
