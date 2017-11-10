@@ -47,6 +47,9 @@ function demoMaker(points, canvas, options, stepCb, completedCb) {
   var chunk = 1;
   var frameId;
 
+  // console.log(JSON.stringify(points));
+  // console.log(JSON.stringify(options));
+
   var tsne = new tsnejs.tSNE(options);
   var dists = distanceMatrix(points);
   tsne.initDataDist(dists);

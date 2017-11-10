@@ -9,6 +9,7 @@
 <script src="assets/visualize.js"></script>
 <script src="assets/figures.js"></script>
 <script src="assets/persistence_diagram.js"></script>
+<script src="assets/heatmap.js"></script>
 
 <style>
 
@@ -705,6 +706,12 @@ input[type=range]:focus::-ms-fill-upper {
         </td>
       </tr>
     </tbody></table>
+    <div id="heatmap">
+      <h2>Heatmap of bottleneck distances</h2>
+      <svg class="heatmap-type-b"></svg>
+      <h2>Heatmap of wasserstein distances</h2>
+      <svg class="heatmap-type-w"></svg>
+    </div>
   </div>
   <dt-byline></dt-byline>
   <!-- bring the figures to life -->

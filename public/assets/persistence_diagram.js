@@ -12,6 +12,7 @@ function pd_message(selector, text) {
 }
 
 function pd_display(selector, points, Cb) {
+    return;
     var postData = points.map(function(p) {
         return p.coords.join(',')
     }).join("\n");
@@ -83,6 +84,7 @@ function pd_draw(selector, runID, points) {
 }
 
 function pd_distance(beforeID, afterID) {
+    return;
     var postData = [beforeID, afterID].join("\n");
 
     var apiURL = '/distance';
