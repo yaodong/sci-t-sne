@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import shlex
-import subprocess
+import subprocess as sp
+import multiprocessing as mp
 import uuid
 import csv
-
 
 app = Flask(__name__)
 CORS(app)
@@ -25,7 +25,7 @@ def compute():
 
     cmd = 'ripser --format point-cloud --dim 1 ' + input_file_name
 
-    process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE)
+    process = sp.Popen(shlex.split(cmd), stdout=sp.PIPE)
     try:
         outs, errs = process.communicate(timeout=180)
     except subprocess.TimeoutExpired:
@@ -60,26 +60,23 @@ def compute():
 
 @app.route("/distance", methods=["POST"])
 def distance():
-    diagrams = [i.decode('ascii') for i in request.data.split(b'\n')]
-    result_id = uuid.uuid1().hex
+    diagram_id = [i.decode('ascii') for i in request.data.split(b'\n')]
 
-    result = {}
-    cmd = 'Rscript distance.r {0} {1} {2}'.format(*diagrams, result_id)
-    process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE)
-    try:
-        outs, errs = process.communicate(timeout=180)
-    except subprocess.TimeoutExpired:
-        process.kill()
-    else:
-        with open('/tmp/result-{0}'.format(result_id)) as f:
-            reader = csv.DictReader(f)
-            row = dict(next(reader))
-            result = {
-                'bottleneck': float(row['bottleneck']),
-                'wasserstein': float(row['wasserstein']),
-            }
+    results = {}
 
-    return jsonify(result)
+    # TODO use multiple processes
+
+    cmd = shlex.split('bottleneck_dist /tmp/diagram-{0} /tmp/diagram-{1}'.format(*diagram_id))
+    process = sp.Popen(cmd, stderr=sp.PIPE, stdout=sp.PIPE)
+    outs, errs = process.communicate(timeout=180)
+    results['bottleneck'] = float(outs.decode('ascii'))
+
+    cmd = shlex.split('wasserstein_dist /tmp/diagram-{0} /tmp/diagram-{1}'.format(*diagram_id))
+    process = sp.Popen(cmd, stderr=sp.PIPE, stdout=sp.PIPE)
+    outs, errs = process.communicate(timeout=180)
+    results['wasserstein'] = float(outs.decode('ascii'))
+
+    return jsonify(results)
 
 
 if __name__ == "__main__":

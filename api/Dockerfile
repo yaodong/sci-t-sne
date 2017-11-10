@@ -1,24 +1,22 @@
-FROM ubuntu:17.04
+FROM ubuntu:16.04
 
 RUN apt-get -qq update \
-    && apt-get install -qq -y python3 python3-pip git build-essential software-properties-common \
-    libssl-dev libcurl4-openssl-dev libssh2-1-dev apt-transport-https libgmp3-dev libmpfr-dev
+    && apt-get install -qq -y build-essential cmake libboost-all-dev python3 python3-pip
 
-ENV IMG_VERSION 1
+# install ripser
+ADD https://github.com/Ripser/ripser/archive/v1.0.1.tar.gz /root/
+RUN cd /root && tar -zxf v1.0.1.tar.gz && cd ripser-1.0.1 \
+    && make && cp ripser /usr/local/bin/ && cd /root \
+    && rm /root/v1.0.1.tar.gz && rm -rf /root/ripser-*
 
-ADD install-r.sh .
-RUN bash install-r.sh
+# install hera
+ADD ./hera-3552ce68bc76.tar.bz2 /root/
+RUN cd /root/grey_narn-hera-3552ce68bc76/geom_bottleneck \
+    && cmake . && make && cp example/bottleneck_dist /usr/local/bin/ \
+    && cd /root/grey_narn-hera-3552ce68bc76/geom_matching/wasserstein \
+    && cmake . && make && cp wasserstein_dist /usr/local/bin/ \
+    && rm -rf /root/grey_narn-hera-*
 
-# TODO download tar.gz instead of git clone
-RUN git clone https://github.com/Ripser/ripser.git /root/ripser
-WORKDIR /root/ripser
-RUN make && cp ripser /usr/bin/
-
-ADD . /srv/
-WORKDIR /srv
-
-
-RUN Rscript install.r
 RUN pip3 install -r requirements.txt
 
 CMD ["python3", "api.py"]
