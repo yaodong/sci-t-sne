@@ -2,9 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import shlex
 import subprocess as sp
-import multiprocessing as mp
 import uuid
-import csv
 
 app = Flask(__name__)
 CORS(app)
@@ -28,7 +26,7 @@ def compute():
     process = sp.Popen(shlex.split(cmd), stdout=sp.PIPE)
     try:
         outs, errs = process.communicate(timeout=180)
-    except subprocess.TimeoutExpired:
+    except sp.TimeoutExpired:
         process.kill()
     else:
         if b'persistence intervals in dim 1:' not in outs:
